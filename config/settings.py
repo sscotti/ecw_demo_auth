@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-z5e$k6h1%s15f59wyuez=owt#ev*@v@h8he%#v-l$-(4hks7t4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ecw-auth-demo.up.railway.app']
 
 
 # Application definition
