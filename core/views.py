@@ -5,8 +5,10 @@ from uuid import uuid4
 
 import requests
 from django.http import JsonResponse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 
+@xframe_options_exempt
 def launch(request):
     iss = request.GET["iss"]
     launch = request.GET["launch"]
