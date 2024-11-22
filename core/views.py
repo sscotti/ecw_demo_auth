@@ -10,14 +10,15 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 
 @xframe_options_exempt
 def launch(request):
-    iss = request.GET["iss"]
-    launch = request.GET["launch"]
+    launch_response = request.GET
+    iss = launch_response["iss"]
+    launch_code = launch_response["launch"]
 
     # get auth url from iss metadata
-    response = requests.get(url=iss + "/metadata", params={"_format": "json"})
-    auth_url = response.json()["rest"][0]["security"]["extension"][0]["extension"][0][
-        "valueUri"
-    ]
+    metadata_response = requests.get(url=iss + "/metadata", params={"_format": "json"})
+    auth_url = metadata_response.json()["rest"][0]["security"]["extension"][0][
+        "extension"
+    ][0]["valueUri"]
 
     # create a uuid to id the state. pretend we save it for later
     state = str(uuid4())
@@ -28,7 +29,7 @@ def launch(request):
         base64.urlsafe_b64encode(code_challenge).decode("utf-8").rstrip("=")
     )
 
-    response = requests.get(
+    auth_response = requests.get(
         url=auth_url,
         params={
             "response_type": "code",
@@ -38,11 +39,16 @@ def launch(request):
             "scopes": "launch openid fhirUser offline_access user/Encounter.read user/Patient.read",
             "state": state,
             "aud": iss,
-            "launch": launch,
+            "launch": launch_code,
             "code_challenge": code_challenge,
             "code_challenge_method": "S256",
         },
     )
 
-    # return auth url response for debugging
-    return JsonResponse(response.json())
+    # return responses for debugging
+    all_responses = {
+        "launch_response": launch_response,
+        "metadata_response": metadata_response.json(),
+        "auth_response": auth_response.json(),
+    }
+    return JsonResponse(all_responses)
