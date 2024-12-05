@@ -44,6 +44,7 @@ def launch(request):
             "code_challenge_method": "S256",
         },
     )
+    print(auth_response.url)
 
     # return responses for debugging
     all_responses = {
