@@ -23,11 +23,9 @@ def launch(request):
     # create a uuid to id the state. pretend we save it for later
     state = str(uuid4())
 
-    code_verifier = base64.urlsafe_b64encode(os.urandom(64)).decode("utf-8").rstrip("=")
-    code_challenge = hashlib.sha256(code_verifier.encode("utf-8")).digest()
-    code_challenge = (
-        base64.urlsafe_b64encode(code_challenge).decode("utf-8").rstrip("=")
-    )
+    code_verifier = base64.urlsafe_b64encode(os.urandom(64)).decode("utf-8")
+    code_challenge_sha = hashlib.sha256(code_verifier.encode("utf-8")).digest()
+    code_challenge = base64.urlsafe_b64encode(code_challenge_sha).decode("utf-8")
 
     auth_response = requests.get(
         url=auth_url,
