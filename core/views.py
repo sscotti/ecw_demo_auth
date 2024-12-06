@@ -26,6 +26,7 @@ def launch(request):
     code_verifier = base64.urlsafe_b64encode(os.urandom(64)).decode("utf-8")
     code_challenge_sha = hashlib.sha256(code_verifier.encode("utf-8")).digest()
     code_challenge = base64.urlsafe_b64encode(code_challenge_sha).decode("utf-8")
+    print(f"{code_verifier=} {code_challenge_sha=} {code_challenge=}")
 
     auth_response = requests.get(
         url=auth_url,
