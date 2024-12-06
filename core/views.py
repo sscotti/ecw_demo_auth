@@ -29,7 +29,7 @@ def launch(request):
     # b"4da689c0e38bb59f5ba1c452a3d2206c4d74a6473c491f6f2d759ae6fe544d97"
     code_challenge_sha = hashlib.sha256(code_verifier).hexdigest().encode("utf-8")
     # "NGRhNjg5YzBlMzhiYjU5ZjViYTFjNDUyYTNkMjIwNmM0ZDc0YTY0NzNjNDkxZjZmMmQ3NTlhZTZmZTU0NGQ5Nw"
-    code_challenge = base64.urlsafe_b64encode(code_challenge_sha).decode("utf-8")
+    code_challenge = base64.urlsafe_b64encode(code_challenge_sha).decode("utf-8").rstrip("=")
     print(f"{code_verifier=} {code_challenge_sha=} {code_challenge=}")
 
     auth_response = requests.get(
