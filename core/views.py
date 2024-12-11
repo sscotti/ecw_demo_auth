@@ -39,7 +39,7 @@ def launch(request):
             "client_id": os.environ["ECW_CLIENT_ID"],
             "redirect_uri": os.environ["ECW_REDIRECT_URL"],
             # scopes from documentation example
-            "scopes": "launch openid fhirUser offline_access user/Encounter.read user/Patient.read",
+            "scopes": "launch user/Patient.read user/Encounter.read",
             "state": state,
             "aud": iss,
             "launch": launch_code,
